@@ -6,5 +6,5 @@ clean:
 generate: clean
 	openapi-generator generate \
 		-i ../mcc-api-documentation/openapi-public.yaml \
-		-g typescript-node \
+		-g typescript-fetch \
 		--additional-properties=supportsES6=true,npmName=mcc-sdk
