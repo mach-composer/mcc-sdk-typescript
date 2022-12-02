@@ -1,5 +1,5 @@
-README.md
-src
-Makefile
-.openapi-generator-ignore
-index.ts
+/README.md
+/src
+/Makefile
+/.openapi-generator-ignore
+/index.ts
