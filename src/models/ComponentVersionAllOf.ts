@@ -36,7 +36,7 @@ export interface ComponentVersionAllOf {
      * @type {string}
      * @memberof ComponentVersionAllOf
      */
-    branch?: string;
+    branch: string;
 }
 
 /**
@@ -46,6 +46,7 @@ export function instanceOfComponentVersionAllOf(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "component" in value;
     isInstance = isInstance && "version" in value;
+    isInstance = isInstance && "branch" in value;
 
     return isInstance;
 }
@@ -62,7 +63,7 @@ export function ComponentVersionAllOfFromJSONTyped(json: any, ignoreDiscriminato
         
         'component': json['component'],
         'version': json['version'],
-        'branch': !exists(json, 'branch') ? undefined : json['branch'],
+        'branch': json['branch'],
     };
 }
 
