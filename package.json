@@ -1,11 +1,12 @@
 {
-  "name": "mcc-sdk",
+  "name": "@labdigital/mcc-sdk",
   "version": "0.1.0",
+  "license": "MIT",
   "description": "OpenAPI client for mcc-sdk",
-  "author": "OpenAPI-Generator",
+  "author": "Lab Digital",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+    "url": "https://github.com/mach-composer/mcc-sdk-typescript.git"
   },
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
