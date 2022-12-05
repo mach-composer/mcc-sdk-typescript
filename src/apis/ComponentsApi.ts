@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  CommitDataPaginator,
   Component,
   ComponentDraft,
   ComponentPaginator,
@@ -24,6 +25,8 @@ import type {
   ComponentVersionPaginator,
 } from '../models';
 import {
+    CommitDataPaginatorFromJSON,
+    CommitDataPaginatorToJSON,
     ComponentFromJSON,
     ComponentToJSON,
     ComponentDraftFromJSON,
@@ -65,13 +68,6 @@ export interface ComponentVersionCreateRequest {
     componentVersionDraft: ComponentVersionDraft;
 }
 
-export interface ComponentVersionGetCommitsRequest {
-    organization: string;
-    project: string;
-    component: string;
-    version: string;
-}
-
 export interface ComponentVersionPushCommitsRequest {
     organization: string;
     project: string;
@@ -84,6 +80,13 @@ export interface ComponentVersionQueryRequest {
     organization: string;
     project: string;
     component: string;
+}
+
+export interface ComponentVersionQueryCommitsRequest {
+    organization: string;
+    project: string;
+    component: string;
+    version: string;
 }
 
 /**
@@ -290,56 +293,6 @@ export class ComponentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get commits for this component version
-     */
-    async componentVersionGetCommitsRaw(requestParameters: ComponentVersionGetCommitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComponentVersionCommits>> {
-        if (requestParameters.organization === null || requestParameters.organization === undefined) {
-            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentVersionGetCommits.');
-        }
-
-        if (requestParameters.project === null || requestParameters.project === undefined) {
-            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentVersionGetCommits.');
-        }
-
-        if (requestParameters.component === null || requestParameters.component === undefined) {
-            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentVersionGetCommits.');
-        }
-
-        if (requestParameters.version === null || requestParameters.version === undefined) {
-            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling componentVersionGetCommits.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ComponentVersionCommitsFromJSON(jsonValue));
-    }
-
-    /**
-     * Get commits for this component version
-     */
-    async componentVersionGetCommits(requestParameters: ComponentVersionGetCommitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersionCommits> {
-        const response = await this.componentVersionGetCommitsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Push commits for this component version
      */
     async componentVersionPushCommitsRaw(requestParameters: ComponentVersionPushCommitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -438,6 +391,56 @@ export class ComponentsApi extends runtime.BaseAPI {
      */
     async componentVersionQuery(requestParameters: ComponentVersionQueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersionPaginator> {
         const response = await this.componentVersionQueryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get commits for this component version
+     */
+    async componentVersionQueryCommitsRaw(requestParameters: ComponentVersionQueryCommitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CommitDataPaginator>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentVersionQueryCommits.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentVersionQueryCommits.');
+        }
+
+        if (requestParameters.component === null || requestParameters.component === undefined) {
+            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentVersionQueryCommits.');
+        }
+
+        if (requestParameters.version === null || requestParameters.version === undefined) {
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling componentVersionQueryCommits.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CommitDataPaginatorFromJSON(jsonValue));
+    }
+
+    /**
+     * Get commits for this component version
+     */
+    async componentVersionQueryCommits(requestParameters: ComponentVersionQueryCommitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CommitDataPaginator> {
+        const response = await this.componentVersionQueryCommitsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

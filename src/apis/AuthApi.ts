@@ -16,12 +16,13 @@
 import * as runtime from '../runtime';
 
 export interface AuthorizeRequest {
-    audience?: string;
-    responseType?: string;
+    responseType: string;
+    scope: string;
+    redirectUri: string;
+    state: string;
+    codeChallenge: string;
+    codeChallengeMethod: string;
     provider?: string;
-    codeChallenge?: string;
-    codeChallengeMethod?: string;
-    redirectUri?: string;
 }
 
 export interface GetAuthTokenRequest {
@@ -45,18 +46,46 @@ export class AuthApi extends runtime.BaseAPI {
      * Start authorization flow
      */
     async authorizeRaw(requestParameters: AuthorizeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        if (requestParameters.audience !== undefined) {
-            queryParameters['audience'] = requestParameters.audience;
+        if (requestParameters.responseType === null || requestParameters.responseType === undefined) {
+            throw new runtime.RequiredError('responseType','Required parameter requestParameters.responseType was null or undefined when calling authorize.');
         }
+
+        if (requestParameters.scope === null || requestParameters.scope === undefined) {
+            throw new runtime.RequiredError('scope','Required parameter requestParameters.scope was null or undefined when calling authorize.');
+        }
+
+        if (requestParameters.redirectUri === null || requestParameters.redirectUri === undefined) {
+            throw new runtime.RequiredError('redirectUri','Required parameter requestParameters.redirectUri was null or undefined when calling authorize.');
+        }
+
+        if (requestParameters.state === null || requestParameters.state === undefined) {
+            throw new runtime.RequiredError('state','Required parameter requestParameters.state was null or undefined when calling authorize.');
+        }
+
+        if (requestParameters.codeChallenge === null || requestParameters.codeChallenge === undefined) {
+            throw new runtime.RequiredError('codeChallenge','Required parameter requestParameters.codeChallenge was null or undefined when calling authorize.');
+        }
+
+        if (requestParameters.codeChallengeMethod === null || requestParameters.codeChallengeMethod === undefined) {
+            throw new runtime.RequiredError('codeChallengeMethod','Required parameter requestParameters.codeChallengeMethod was null or undefined when calling authorize.');
+        }
+
+        const queryParameters: any = {};
 
         if (requestParameters.responseType !== undefined) {
             queryParameters['response_type'] = requestParameters.responseType;
         }
 
-        if (requestParameters.provider !== undefined) {
-            queryParameters['provider'] = requestParameters.provider;
+        if (requestParameters.scope !== undefined) {
+            queryParameters['scope'] = requestParameters.scope;
+        }
+
+        if (requestParameters.redirectUri !== undefined) {
+            queryParameters['redirect_uri'] = requestParameters.redirectUri;
+        }
+
+        if (requestParameters.state !== undefined) {
+            queryParameters['state'] = requestParameters.state;
         }
 
         if (requestParameters.codeChallenge !== undefined) {
@@ -67,8 +96,8 @@ export class AuthApi extends runtime.BaseAPI {
             queryParameters['code_challenge_method'] = requestParameters.codeChallengeMethod;
         }
 
-        if (requestParameters.redirectUri !== undefined) {
-            queryParameters['redirect_uri'] = requestParameters.redirectUri;
+        if (requestParameters.provider !== undefined) {
+            queryParameters['provider'] = requestParameters.provider;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -94,7 +123,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Start authorization flow
      */
-    async authorize(requestParameters: AuthorizeRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    async authorize(requestParameters: AuthorizeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.authorizeRaw(requestParameters, initOverrides);
     }
 

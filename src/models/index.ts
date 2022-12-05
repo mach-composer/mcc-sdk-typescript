@@ -10,6 +10,8 @@ export * from './CommitData';
 export * from './CommitDataAllOf';
 export * from './CommitDataAuthor';
 export * from './CommitDataDraft';
+export * from './CommitDataPaginator';
+export * from './CommitDataPaginatorAllOf';
 export * from './Component';
 export * from './ComponentAllOf';
 export * from './ComponentDraft';

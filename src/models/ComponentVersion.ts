@@ -42,7 +42,7 @@ export interface ComponentVersion {
      * @type {string}
      * @memberof ComponentVersion
      */
-    branch: string;
+    branch?: string;
 }
 
 /**
@@ -53,7 +53,6 @@ export function instanceOfComponentVersion(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "component" in value;
     isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "branch" in value;
 
     return isInstance;
 }
@@ -71,7 +70,7 @@ export function ComponentVersionFromJSONTyped(json: any, ignoreDiscriminator: bo
         'createdAt': (new Date(json['created_at'])),
         'component': json['component'],
         'version': json['version'],
-        'branch': json['branch'],
+        'branch': !exists(json, 'branch') ? undefined : json['branch'],
     };
 }
 
