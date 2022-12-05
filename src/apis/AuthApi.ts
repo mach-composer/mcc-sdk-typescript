@@ -20,6 +20,7 @@ export interface AuthorizeRequest {
     scope: string;
     redirectUri: string;
     state: string;
+    clientId: string;
     codeChallenge: string;
     codeChallengeMethod: string;
     provider?: string;
@@ -62,6 +63,10 @@ export class AuthApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('state','Required parameter requestParameters.state was null or undefined when calling authorize.');
         }
 
+        if (requestParameters.clientId === null || requestParameters.clientId === undefined) {
+            throw new runtime.RequiredError('clientId','Required parameter requestParameters.clientId was null or undefined when calling authorize.');
+        }
+
         if (requestParameters.codeChallenge === null || requestParameters.codeChallenge === undefined) {
             throw new runtime.RequiredError('codeChallenge','Required parameter requestParameters.codeChallenge was null or undefined when calling authorize.');
         }
@@ -86,6 +91,10 @@ export class AuthApi extends runtime.BaseAPI {
 
         if (requestParameters.state !== undefined) {
             queryParameters['state'] = requestParameters.state;
+        }
+
+        if (requestParameters.clientId !== undefined) {
+            queryParameters['client_id'] = requestParameters.clientId;
         }
 
         if (requestParameters.codeChallenge !== undefined) {

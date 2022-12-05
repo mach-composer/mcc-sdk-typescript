@@ -1,3 +1,5 @@
 .travis.yml
 .gitignore
 git_push.sh
+.npmignore
+package.json
