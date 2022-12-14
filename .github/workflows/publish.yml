@@ -19,5 +19,5 @@ jobs:
       - run: pnpm build
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ env.NODE_AUTH_TOKEN }}
+          token: ${{ secrets.NODE_AUTH_TOKEN }}
           access: public
