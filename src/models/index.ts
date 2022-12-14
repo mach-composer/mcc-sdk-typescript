@@ -24,6 +24,7 @@ export * from './ComponentVersionDraft';
 export * from './ComponentVersionPaginator';
 export * from './ComponentVersionPaginatorAllOf';
 export * from './ModelError';
+export * from './MyAccountInformation200Response';
 export * from './Organization';
 export * from './OrganizationAllOf';
 export * from './OrganizationDraft';

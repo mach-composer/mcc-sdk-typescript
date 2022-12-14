@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  MyAccountInformation200Response,
   Organization,
   OrganizationDraft,
   OrganizationPaginator,
@@ -27,6 +28,8 @@ import type {
   ProjectPaginator,
 } from '../models';
 import {
+    MyAccountInformation200ResponseFromJSON,
+    MyAccountInformation200ResponseToJSON,
     OrganizationFromJSON,
     OrganizationToJSON,
     OrganizationDraftFromJSON,
@@ -75,6 +78,40 @@ export interface ProjectQueryRequest {
  * 
  */
 export class AccountManagementApi extends runtime.BaseAPI {
+
+    /**
+     * Return user information from current user
+     */
+    async myAccountInformationRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MyAccountInformation200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/account/me`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MyAccountInformation200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Return user information from current user
+     */
+    async myAccountInformation(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MyAccountInformation200Response> {
+        const response = await this.myAccountInformationRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * Create new organization
