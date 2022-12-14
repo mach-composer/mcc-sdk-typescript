@@ -27,11 +27,12 @@ export interface AuthorizeRequest {
 }
 
 export interface GetAuthTokenRequest {
-    grantType?: string;
-    clientId?: string;
+    grantType: string;
+    clientId: string;
     codeVerifier?: string;
     code?: string;
     redirectUri?: string;
+    refreshToken?: string;
 }
 
 export interface IntrospectTokenRequest {
@@ -140,38 +141,70 @@ export class AuthApi extends runtime.BaseAPI {
      * Return a new token
      */
     async getAuthTokenRaw(requestParameters: GetAuthTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.grantType === null || requestParameters.grantType === undefined) {
+            throw new runtime.RequiredError('grantType','Required parameter requestParameters.grantType was null or undefined when calling getAuthToken.');
+        }
+
+        if (requestParameters.clientId === null || requestParameters.clientId === undefined) {
+            throw new runtime.RequiredError('clientId','Required parameter requestParameters.clientId was null or undefined when calling getAuthToken.');
+        }
+
         const queryParameters: any = {};
-
-        if (requestParameters.grantType !== undefined) {
-            queryParameters['grant_type'] = requestParameters.grantType;
-        }
-
-        if (requestParameters.clientId !== undefined) {
-            queryParameters['client_id'] = requestParameters.clientId;
-        }
-
-        if (requestParameters.codeVerifier !== undefined) {
-            queryParameters['code_verifier'] = requestParameters.codeVerifier;
-        }
-
-        if (requestParameters.code !== undefined) {
-            queryParameters['code'] = requestParameters.code;
-        }
-
-        if (requestParameters.redirectUri !== undefined) {
-            queryParameters['redirect_uri'] = requestParameters.redirectUri;
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
         }
+        const consumes: runtime.Consume[] = [
+            { contentType: 'application/x-www-form-urlencoded' },
+        ];
+        // @ts-ignore: canConsumeForm may be unused
+        const canConsumeForm = runtime.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any };
+        let useForm = false;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new URLSearchParams();
+        }
+
+        if (requestParameters.grantType !== undefined) {
+            formParams.append('grant_type', requestParameters.grantType as any);
+        }
+
+        if (requestParameters.clientId !== undefined) {
+            formParams.append('client_id', requestParameters.clientId as any);
+        }
+
+        if (requestParameters.codeVerifier !== undefined) {
+            formParams.append('code_verifier', requestParameters.codeVerifier as any);
+        }
+
+        if (requestParameters.code !== undefined) {
+            formParams.append('code', requestParameters.code as any);
+        }
+
+        if (requestParameters.redirectUri !== undefined) {
+            formParams.append('redirect_uri', requestParameters.redirectUri as any);
+        }
+
+        if (requestParameters.refreshToken !== undefined) {
+            formParams.append('refresh_token', requestParameters.refreshToken as any);
+        }
+
         const response = await this.request({
             path: `/oauth/token`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: formParams,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -180,7 +213,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Return a new token
      */
-    async getAuthToken(requestParameters: GetAuthTokenRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    async getAuthToken(requestParameters: GetAuthTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.getAuthTokenRaw(requestParameters, initOverrides);
     }
 
