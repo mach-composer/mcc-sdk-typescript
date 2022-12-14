@@ -10,7 +10,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
       - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
         id: pnpm-install
@@ -20,9 +19,5 @@ jobs:
       - run: pnpm build
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NPM_TOKEN }}
-        env:
-          TEST_1: ${{ secrets.NPM_TOKEN }}
-          TEST_2: ${{ secrets.NODE_AUTH_TOKEN }}
-          TEST_3: ${{ env.NPM_TOKEN }}
-          TEST_4: ${{ env.NODE_AUTH_TOKEN }}
+          token: ${{ env.NODE_AUTH_TOKEN }}
+          access: public
