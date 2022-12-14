@@ -20,4 +20,9 @@ jobs:
       - run: pnpm build
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NODE_AUTH_TOKEN }}
+          token: ${{ secrets.NPM_TOKEN }}
+        env:
+          TEST_1: ${{ secrets.NPM_TOKEN }}
+          TEST_2: ${{ secrets.NODE_AUTH_TOKEN }}
+          TEST_3: ${{ env.NPM_TOKEN }}
+          TEST_4: ${{ env.NODE_AUTH_TOKEN }}
