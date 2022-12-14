@@ -1,6 +1,6 @@
 {
   "name": "@mach-composer/mcc-sdk",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "MIT",
   "description": "OpenAPI client for mcc-sdk",
   "author": "Lab Digital",
