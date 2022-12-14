@@ -3,3 +3,4 @@
 git_push.sh
 .npmignore
 package.json
+README.md

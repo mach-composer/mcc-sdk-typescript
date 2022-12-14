@@ -51,6 +51,12 @@ export interface OrganizationUser {
      */
     email: string;
     /**
+     * The avatar profile image url of the user
+     * @type {string}
+     * @memberof OrganizationUser
+     */
+    avatarUrl?: string;
+    /**
      * Key of the organization
      * @type {string}
      * @memberof OrganizationUser
@@ -100,6 +106,7 @@ export function OrganizationUserFromJSONTyped(json: any, ignoreDiscriminator: bo
         'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
         'name': !exists(json, 'name') ? undefined : json['name'],
         'email': json['email'],
+        'avatarUrl': !exists(json, 'avatar_url') ? undefined : json['avatar_url'],
         'organizationKey': !exists(json, 'organization_key') ? undefined : json['organization_key'],
         'organizationName': !exists(json, 'organization_name') ? undefined : json['organization_name'],
         'organizationScopes': !exists(json, 'organization_scopes') ? undefined : json['organization_scopes'],
@@ -120,6 +127,7 @@ export function OrganizationUserToJSON(value?: OrganizationUser | null): any {
         'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'name': value.name,
         'email': value.email,
+        'avatar_url': value.avatarUrl,
         'organization_key': value.organizationKey,
         'organization_name': value.organizationName,
         'organization_scopes': value.organizationScopes,
