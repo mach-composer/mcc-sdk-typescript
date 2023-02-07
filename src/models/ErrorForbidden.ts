@@ -16,48 +16,62 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApiClientDraft
+ * @interface ErrorForbidden
  */
-export interface ApiClientDraft {
+export interface ErrorForbidden {
     /**
-     * description about the api client
+     * 
+     * @type {number}
+     * @memberof ErrorForbidden
+     */
+    status?: number;
+    /**
+     * 
      * @type {string}
-     * @memberof ApiClientDraft
+     * @memberof ErrorForbidden
+     */
+    summary?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ErrorForbidden
      */
     description?: string;
     /**
-     * Scope
-     * @type {Array<string>}
-     * @memberof ApiClientDraft
+     * 
+     * @type {string}
+     * @memberof ErrorForbidden
      */
-    scope?: Array<string>;
+    message?: string;
 }
 
 /**
- * Check if a given object implements the ApiClientDraft interface.
+ * Check if a given object implements the ErrorForbidden interface.
  */
-export function instanceOfApiClientDraft(value: object): boolean {
+export function instanceOfErrorForbidden(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function ApiClientDraftFromJSON(json: any): ApiClientDraft {
-    return ApiClientDraftFromJSONTyped(json, false);
+export function ErrorForbiddenFromJSON(json: any): ErrorForbidden {
+    return ErrorForbiddenFromJSONTyped(json, false);
 }
 
-export function ApiClientDraftFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApiClientDraft {
+export function ErrorForbiddenFromJSONTyped(json: any, ignoreDiscriminator: boolean): ErrorForbidden {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'status': !exists(json, 'status') ? undefined : json['status'],
+        'summary': !exists(json, 'summary') ? undefined : json['summary'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
     };
 }
 
-export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
+export function ErrorForbiddenToJSON(value?: ErrorForbidden | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -66,8 +80,10 @@ export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
     }
     return {
         
+        'status': value.status,
+        'summary': value.summary,
         'description': value.description,
-        'scope': value.scope,
+        'message': value.message,
     };
 }
 

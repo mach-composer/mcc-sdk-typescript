@@ -16,48 +16,41 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApiClientDraft
+ * @interface ErrorUnauthorized
  */
-export interface ApiClientDraft {
+export interface ErrorUnauthorized {
     /**
-     * description about the api client
+     * 
      * @type {string}
-     * @memberof ApiClientDraft
+     * @memberof ErrorUnauthorized
      */
-    description?: string;
-    /**
-     * Scope
-     * @type {Array<string>}
-     * @memberof ApiClientDraft
-     */
-    scope?: Array<string>;
+    message?: string;
 }
 
 /**
- * Check if a given object implements the ApiClientDraft interface.
+ * Check if a given object implements the ErrorUnauthorized interface.
  */
-export function instanceOfApiClientDraft(value: object): boolean {
+export function instanceOfErrorUnauthorized(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function ApiClientDraftFromJSON(json: any): ApiClientDraft {
-    return ApiClientDraftFromJSONTyped(json, false);
+export function ErrorUnauthorizedFromJSON(json: any): ErrorUnauthorized {
+    return ErrorUnauthorizedFromJSONTyped(json, false);
 }
 
-export function ApiClientDraftFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApiClientDraft {
+export function ErrorUnauthorizedFromJSONTyped(json: any, ignoreDiscriminator: boolean): ErrorUnauthorized {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'message': !exists(json, 'message') ? undefined : json['message'],
     };
 }
 
-export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
+export function ErrorUnauthorizedToJSON(value?: ErrorUnauthorized | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -66,8 +59,7 @@ export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
     }
     return {
         
-        'description': value.description,
-        'scope': value.scope,
+        'message': value.message,
     };
 }
 

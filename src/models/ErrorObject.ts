@@ -16,48 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApiClientDraft
+ * @interface ErrorObject
  */
-export interface ApiClientDraft {
+export interface ErrorObject {
     /**
-     * description about the api client
+     * 
      * @type {string}
-     * @memberof ApiClientDraft
+     * @memberof ErrorObject
      */
-    description?: string;
+    code: string;
     /**
-     * Scope
-     * @type {Array<string>}
-     * @memberof ApiClientDraft
+     * 
+     * @type {string}
+     * @memberof ErrorObject
      */
-    scope?: Array<string>;
+    message: string;
 }
 
 /**
- * Check if a given object implements the ApiClientDraft interface.
+ * Check if a given object implements the ErrorObject interface.
  */
-export function instanceOfApiClientDraft(value: object): boolean {
+export function instanceOfErrorObject(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "code" in value;
+    isInstance = isInstance && "message" in value;
 
     return isInstance;
 }
 
-export function ApiClientDraftFromJSON(json: any): ApiClientDraft {
-    return ApiClientDraftFromJSONTyped(json, false);
+export function ErrorObjectFromJSON(json: any): ErrorObject {
+    return ErrorObjectFromJSONTyped(json, false);
 }
 
-export function ApiClientDraftFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApiClientDraft {
+export function ErrorObjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): ErrorObject {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'code': json['code'],
+        'message': json['message'],
     };
 }
 
-export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
+export function ErrorObjectToJSON(value?: ErrorObject | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -66,8 +68,8 @@ export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
     }
     return {
         
-        'description': value.description,
-        'scope': value.scope,
+        'code': value.code,
+        'message': value.message,
     };
 }
 

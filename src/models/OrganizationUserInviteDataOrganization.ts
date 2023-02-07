@@ -16,48 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ApiClientDraft
+ * @interface OrganizationUserInviteDataOrganization
  */
-export interface ApiClientDraft {
+export interface OrganizationUserInviteDataOrganization {
     /**
-     * description about the api client
+     * 
      * @type {string}
-     * @memberof ApiClientDraft
+     * @memberof OrganizationUserInviteDataOrganization
      */
-    description?: string;
+    id: string;
     /**
-     * Scope
-     * @type {Array<string>}
-     * @memberof ApiClientDraft
+     * 
+     * @type {string}
+     * @memberof OrganizationUserInviteDataOrganization
      */
-    scope?: Array<string>;
+    name: string;
 }
 
 /**
- * Check if a given object implements the ApiClientDraft interface.
+ * Check if a given object implements the OrganizationUserInviteDataOrganization interface.
  */
-export function instanceOfApiClientDraft(value: object): boolean {
+export function instanceOfOrganizationUserInviteDataOrganization(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "name" in value;
 
     return isInstance;
 }
 
-export function ApiClientDraftFromJSON(json: any): ApiClientDraft {
-    return ApiClientDraftFromJSONTyped(json, false);
+export function OrganizationUserInviteDataOrganizationFromJSON(json: any): OrganizationUserInviteDataOrganization {
+    return OrganizationUserInviteDataOrganizationFromJSONTyped(json, false);
 }
 
-export function ApiClientDraftFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApiClientDraft {
+export function OrganizationUserInviteDataOrganizationFromJSONTyped(json: any, ignoreDiscriminator: boolean): OrganizationUserInviteDataOrganization {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'id': json['id'],
+        'name': json['name'],
     };
 }
 
-export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
+export function OrganizationUserInviteDataOrganizationToJSON(value?: OrganizationUserInviteDataOrganization | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -66,8 +68,8 @@ export function ApiClientDraftToJSON(value?: ApiClientDraft | null): any {
     }
     return {
         
-        'description': value.description,
-        'scope': value.scope,
+        'id': value.id,
+        'name': value.name,
     };
 }
 
