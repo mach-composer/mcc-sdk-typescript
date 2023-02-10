@@ -142,7 +142,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
+            path: `/organizations/{organization}/projects/{project}/components`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -199,7 +199,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/latest`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
+            path: `/organizations/{organization}/projects/{project}/components/{component}/latest`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -255,7 +255,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
+            path: `/organizations/{organization}/projects/{project}/components`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -309,7 +309,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/versions`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -368,7 +368,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -428,7 +428,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/versions`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -492,7 +492,7 @@ export class ComponentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

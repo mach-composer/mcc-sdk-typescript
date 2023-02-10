@@ -83,7 +83,7 @@ export class APIClientsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/api-clients`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
+            path: `/organizations/{organization}/projects/{project}/api-clients`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -128,7 +128,7 @@ export class APIClientsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/{organization}/projects/{project}/api-clients`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
+            path: `/organizations/{organization}/projects/{project}/api-clients`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
