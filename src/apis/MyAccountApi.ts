@@ -18,7 +18,6 @@ import type {
   ErrorForbidden,
   ErrorUnauthorized,
   MyAccountInformation200Response,
-  OrganizationUserInviteData,
 } from '../models';
 import {
     ErrorForbiddenFromJSON,
@@ -27,19 +26,7 @@ import {
     ErrorUnauthorizedToJSON,
     MyAccountInformation200ResponseFromJSON,
     MyAccountInformation200ResponseToJSON,
-    OrganizationUserInviteDataFromJSON,
-    OrganizationUserInviteDataToJSON,
 } from '../models';
-
-export interface OrganizationUserInviteAcceptRequest {
-    organization: string;
-    id: string;
-}
-
-export interface OrganizationUserInviteViewRequest {
-    organization: string;
-    id: string;
-}
 
 /**
  * 
@@ -81,84 +68,6 @@ export class MyAccountApi extends runtime.BaseAPI {
      */
     async myAccountInformation(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MyAccountInformation200Response> {
         const response = await this.myAccountInformationRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Accept a user invite
-     */
-    async organizationUserInviteAcceptRaw(requestParameters: OrganizationUserInviteAcceptRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OrganizationUserInviteData>> {
-        if (requestParameters.organization === null || requestParameters.organization === undefined) {
-            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling organizationUserInviteAccept.');
-        }
-
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling organizationUserInviteAccept.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
-        }
-
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
-        }
-
-        const response = await this.request({
-            path: `/organizations/{organization}/users/invite/{id}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OrganizationUserInviteDataFromJSON(jsonValue));
-    }
-
-    /**
-     * Accept a user invite
-     */
-    async organizationUserInviteAccept(requestParameters: OrganizationUserInviteAcceptRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationUserInviteData> {
-        const response = await this.organizationUserInviteAcceptRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * View invite information
-     */
-    async organizationUserInviteViewRaw(requestParameters: OrganizationUserInviteViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OrganizationUserInviteData>> {
-        if (requestParameters.organization === null || requestParameters.organization === undefined) {
-            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling organizationUserInviteView.');
-        }
-
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling organizationUserInviteView.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/organizations/{organization}/users/invite/{id}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OrganizationUserInviteDataFromJSON(jsonValue));
-    }
-
-    /**
-     * View invite information
-     */
-    async organizationUserInviteView(requestParameters: OrganizationUserInviteViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationUserInviteData> {
-        const response = await this.organizationUserInviteViewRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

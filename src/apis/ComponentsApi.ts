@@ -25,6 +25,7 @@ import type {
   ComponentVersionPaginator,
   ErrorForbidden,
   ErrorUnauthorized,
+  PatchRequestInner,
 } from '../models';
 import {
     CommitDataPaginatorFromJSON,
@@ -47,6 +48,8 @@ import {
     ErrorForbiddenToJSON,
     ErrorUnauthorizedFromJSON,
     ErrorUnauthorizedToJSON,
+    PatchRequestInnerFromJSON,
+    PatchRequestInnerToJSON,
 } from '../models';
 
 export interface ComponentCreateRequest {
@@ -62,6 +65,13 @@ export interface ComponentLatestVersionRequest {
     branch: string;
 }
 
+export interface ComponentPatchRequest {
+    organization: string;
+    project: string;
+    component: string;
+    patchRequestInner?: Array<PatchRequestInner>;
+}
+
 export interface ComponentQueryRequest {
     organization: string;
     project: string;
@@ -75,6 +85,20 @@ export interface ComponentVersionCreateRequest {
     project: string;
     component: string;
     componentVersionDraft: ComponentVersionDraft;
+}
+
+export interface ComponentVersionDeleteRequest {
+    organization: string;
+    project: string;
+    component: string;
+    version: string;
+}
+
+export interface ComponentVersionGetRequest {
+    organization: string;
+    project: string;
+    component: string;
+    version: string;
 }
 
 export interface ComponentVersionPushCommitsRequest {
@@ -161,7 +185,7 @@ export class ComponentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get last component version.
+     * Get last component version
      */
     async componentLatestVersionRaw(requestParameters: ComponentLatestVersionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComponentVersion>> {
         if (requestParameters.organization === null || requestParameters.organization === undefined) {
@@ -209,10 +233,61 @@ export class ComponentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get last component version.
+     * Get last component version
      */
     async componentLatestVersion(requestParameters: ComponentLatestVersionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersion> {
         const response = await this.componentLatestVersionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Patch an existing component
+     */
+    async componentPatchRaw(requestParameters: ComponentPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Component>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentPatch.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentPatch.');
+        }
+
+        if (requestParameters.component === null || requestParameters.component === undefined) {
+            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentPatch.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}/components/{component}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.patchRequestInner.map(PatchRequestInnerToJSON),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ComponentFromJSON(jsonValue));
+    }
+
+    /**
+     * Patch an existing component
+     */
+    async componentPatch(requestParameters: ComponentPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Component> {
+        const response = await this.componentPatchRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -273,7 +348,7 @@ export class ComponentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create component
+     * Create component version
      */
     async componentVersionCreateRaw(requestParameters: ComponentVersionCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComponentVersion>> {
         if (requestParameters.organization === null || requestParameters.organization === undefined) {
@@ -320,10 +395,114 @@ export class ComponentsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create component
+     * Create component version
      */
     async componentVersionCreate(requestParameters: ComponentVersionCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersion> {
         const response = await this.componentVersionCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete component version
+     */
+    async componentVersionDeleteRaw(requestParameters: ComponentVersionDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComponentVersion>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentVersionDelete.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentVersionDelete.');
+        }
+
+        if (requestParameters.component === null || requestParameters.component === undefined) {
+            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentVersionDelete.');
+        }
+
+        if (requestParameters.version === null || requestParameters.version === undefined) {
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling componentVersionDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions/{version}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ComponentVersionFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete component version
+     */
+    async componentVersionDelete(requestParameters: ComponentVersionDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersion> {
+        const response = await this.componentVersionDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get component version
+     */
+    async componentVersionGetRaw(requestParameters: ComponentVersionGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComponentVersion>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentVersionGet.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentVersionGet.');
+        }
+
+        if (requestParameters.component === null || requestParameters.component === undefined) {
+            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentVersionGet.');
+        }
+
+        if (requestParameters.version === null || requestParameters.version === undefined) {
+            throw new runtime.RequiredError('version','Required parameter requestParameters.version was null or undefined when calling componentVersionGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}/components/{component}/versions/{version}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))).replace(`{${"version"}}`, encodeURIComponent(String(requestParameters.version))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ComponentVersionFromJSON(jsonValue));
+    }
+
+    /**
+     * Get component version
+     */
+    async componentVersionGet(requestParameters: ComponentVersionGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComponentVersion> {
+        const response = await this.componentVersionGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

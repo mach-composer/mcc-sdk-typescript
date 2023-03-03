@@ -16,50 +16,60 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ComponentVersionDraft
+ * @interface JSONPatchRequestRemove
  */
-export interface ComponentVersionDraft {
+export interface JSONPatchRequestRemove {
     /**
-     * 
+     * A JSON Pointer path.
      * @type {string}
-     * @memberof ComponentVersionDraft
+     * @memberof JSONPatchRequestRemove
      */
-    version: string;
+    path: string;
     /**
-     * 
+     * The operation to perform.
      * @type {string}
-     * @memberof ComponentVersionDraft
+     * @memberof JSONPatchRequestRemove
      */
-    branch: string;
+    op: JSONPatchRequestRemoveOpEnum;
 }
 
+
 /**
- * Check if a given object implements the ComponentVersionDraft interface.
+ * @export
  */
-export function instanceOfComponentVersionDraft(value: object): boolean {
+export const JSONPatchRequestRemoveOpEnum = {
+    Remove: 'remove'
+} as const;
+export type JSONPatchRequestRemoveOpEnum = typeof JSONPatchRequestRemoveOpEnum[keyof typeof JSONPatchRequestRemoveOpEnum];
+
+
+/**
+ * Check if a given object implements the JSONPatchRequestRemove interface.
+ */
+export function instanceOfJSONPatchRequestRemove(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "branch" in value;
+    isInstance = isInstance && "path" in value;
+    isInstance = isInstance && "op" in value;
 
     return isInstance;
 }
 
-export function ComponentVersionDraftFromJSON(json: any): ComponentVersionDraft {
-    return ComponentVersionDraftFromJSONTyped(json, false);
+export function JSONPatchRequestRemoveFromJSON(json: any): JSONPatchRequestRemove {
+    return JSONPatchRequestRemoveFromJSONTyped(json, false);
 }
 
-export function ComponentVersionDraftFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComponentVersionDraft {
+export function JSONPatchRequestRemoveFromJSONTyped(json: any, ignoreDiscriminator: boolean): JSONPatchRequestRemove {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'version': json['version'],
-        'branch': json['branch'],
+        'path': json['path'],
+        'op': json['op'],
     };
 }
 
-export function ComponentVersionDraftToJSON(value?: ComponentVersionDraft | null): any {
+export function JSONPatchRequestRemoveToJSON(value?: JSONPatchRequestRemove | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,8 +78,8 @@ export function ComponentVersionDraftToJSON(value?: ComponentVersionDraft | null
     }
     return {
         
-        'version': value.version,
-        'branch': value.branch,
+        'path': value.path,
+        'op': value.op,
     };
 }
 

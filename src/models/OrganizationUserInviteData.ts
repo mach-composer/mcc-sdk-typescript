@@ -33,6 +33,13 @@ export interface OrganizationUserInviteData {
      */
     id: string;
     /**
+     * If the invite is still valid. False if the invite expired or
+     * was already used.
+     * @type {boolean}
+     * @memberof OrganizationUserInviteData
+     */
+    valid?: boolean;
+    /**
      * 
      * @type {string}
      * @memberof OrganizationUserInviteData
@@ -69,6 +76,7 @@ export function OrganizationUserInviteDataFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'id': json['id'],
+        'valid': !exists(json, 'valid') ? undefined : json['valid'],
         'createdBy': json['created_by'],
         'organization': OrganizationUserInviteDataOrganizationFromJSON(json['organization']),
     };
@@ -84,6 +92,7 @@ export function OrganizationUserInviteDataToJSON(value?: OrganizationUserInviteD
     return {
         
         'id': value.id,
+        'valid': value.valid,
         'created_by': value.createdBy,
         'organization': OrganizationUserInviteDataOrganizationToJSON(value.organization),
     };
