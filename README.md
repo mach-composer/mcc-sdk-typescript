@@ -31,9 +31,10 @@ pnpm run build
 
 ### Publishing
 
-A new tag should be created after a push to main. See [gh-action-bump-version](https://github.com/phips28/gh-action-bump-version).
+This project uses @changesets/cli for managing the changelog and the version. Use `pnpm changeset` to add a new
+changelog item. When pushing to `main` GitHub actions will automatically create a PR to release a new version
+once merged.
 
-To publish to NPM, go to Github and create a release there with the latest tag.
 
 ### Consuming
 
