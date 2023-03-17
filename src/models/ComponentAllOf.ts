@@ -25,6 +25,18 @@ export interface ComponentAllOf {
      * @memberof ComponentAllOf
      */
     key?: string;
+    /**
+     * name of the component
+     * @type {string}
+     * @memberof ComponentAllOf
+     */
+    name?: string;
+    /**
+     * short description of the component
+     * @type {string}
+     * @memberof ComponentAllOf
+     */
+    description?: string;
 }
 
 /**
@@ -47,6 +59,8 @@ export function ComponentAllOfFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'key': !exists(json, 'key') ? undefined : json['key'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
 
@@ -60,6 +74,8 @@ export function ComponentAllOfToJSON(value?: ComponentAllOf | null): any {
     return {
         
         'key': value.key,
+        'name': value.name,
+        'description': value.description,
     };
 }
 

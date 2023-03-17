@@ -58,6 +58,12 @@ export interface ComponentCreateRequest {
     componentDraft: ComponentDraft;
 }
 
+export interface ComponentDeleteRequest {
+    organization: string;
+    project: string;
+    component: string;
+}
+
 export interface ComponentLatestVersionRequest {
     organization: string;
     project: string;
@@ -181,6 +187,56 @@ export class ComponentsApi extends runtime.BaseAPI {
      */
     async componentCreate(requestParameters: ComponentCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Component> {
         const response = await this.componentCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * This action will delete the component and all versions.
+     * Delete a component
+     */
+    async componentDeleteRaw(requestParameters: ComponentDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Component>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling componentDelete.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling componentDelete.');
+        }
+
+        if (requestParameters.component === null || requestParameters.component === undefined) {
+            throw new runtime.RequiredError('component','Required parameter requestParameters.component was null or undefined when calling componentDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}/components/{component}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"component"}}`, encodeURIComponent(String(requestParameters.component))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ComponentFromJSON(jsonValue));
+    }
+
+    /**
+     * This action will delete the component and all versions.
+     * Delete a component
+     */
+    async componentDelete(requestParameters: ComponentDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Component> {
+        const response = await this.componentDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -91,6 +91,11 @@ export interface ProjectCreateRequest {
     projectDraft: ProjectDraft;
 }
 
+export interface ProjectDeleteRequest {
+    organization: string;
+    project: string;
+}
+
 export interface ProjectPatchRequest {
     organization: string;
     project: string;
@@ -437,6 +442,52 @@ export class OrganizationManagementApi extends runtime.BaseAPI {
      */
     async projectCreate(requestParameters: ProjectCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Project> {
         const response = await this.projectCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * This action will delete the project and all related resources.
+     * Delete a project
+     */
+    async projectDeleteRaw(requestParameters: ProjectDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Project>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling projectDelete.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling projectDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectFromJSON(jsonValue));
+    }
+
+    /**
+     * This action will delete the project and all related resources.
+     * Delete a project
+     */
+    async projectDelete(requestParameters: ProjectDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Project> {
+        const response = await this.projectDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

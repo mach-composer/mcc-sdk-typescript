@@ -31,6 +31,18 @@ export interface Component {
      * @memberof Component
      */
     key?: string;
+    /**
+     * name of the component
+     * @type {string}
+     * @memberof Component
+     */
+    name?: string;
+    /**
+     * short description of the component
+     * @type {string}
+     * @memberof Component
+     */
+    description?: string;
 }
 
 /**
@@ -55,6 +67,8 @@ export function ComponentFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'createdAt': (new Date(json['created_at'])),
         'key': !exists(json, 'key') ? undefined : json['key'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
 
@@ -69,6 +83,8 @@ export function ComponentToJSON(value?: Component | null): any {
         
         'created_at': (value.createdAt.toISOString()),
         'key': value.key,
+        'name': value.name,
+        'description': value.description,
     };
 }
 

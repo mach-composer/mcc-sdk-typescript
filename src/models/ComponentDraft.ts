@@ -25,6 +25,18 @@ export interface ComponentDraft {
      * @memberof ComponentDraft
      */
     key: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ComponentDraft
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ComponentDraft
+     */
+    description?: string;
 }
 
 /**
@@ -33,6 +45,7 @@ export interface ComponentDraft {
 export function instanceOfComponentDraft(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "key" in value;
+    isInstance = isInstance && "name" in value;
 
     return isInstance;
 }
@@ -48,6 +61,8 @@ export function ComponentDraftFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'key': json['key'],
+        'name': json['name'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
     };
 }
 
@@ -61,6 +76,8 @@ export function ComponentDraftToJSON(value?: ComponentDraft | null): any {
     return {
         
         'key': value.key,
+        'name': value.name,
+        'description': value.description,
     };
 }
 

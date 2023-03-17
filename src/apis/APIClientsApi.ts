@@ -40,9 +40,18 @@ export interface ApiClientCreateRequest {
     apiClientDraft: ApiClientDraft;
 }
 
+export interface ApiClientDeleteRequest {
+    organization: string;
+    project: string;
+    id: string;
+}
+
 export interface ApiClientQueryRequest {
     organization: string;
     project: string;
+    offset?: number;
+    limit?: number;
+    sort?: Array<string>;
 }
 
 /**
@@ -102,6 +111,54 @@ export class APIClientsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Delete an API Client
+     */
+    async apiClientDeleteRaw(requestParameters: ApiClientDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApiClient>> {
+        if (requestParameters.organization === null || requestParameters.organization === undefined) {
+            throw new runtime.RequiredError('organization','Required parameter requestParameters.organization was null or undefined when calling apiClientDelete.');
+        }
+
+        if (requestParameters.project === null || requestParameters.project === undefined) {
+            throw new runtime.RequiredError('project','Required parameter requestParameters.project was null or undefined when calling apiClientDelete.');
+        }
+
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiClientDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            // oauth required
+            headerParameters["Authorization"] = await this.configuration.accessToken("OAuth2", []);
+        }
+
+        const response = await this.request({
+            path: `/organizations/{organization}/projects/{project}/api-clients/{id}`.replace(`{${"organization"}}`, encodeURIComponent(String(requestParameters.organization))).replace(`{${"project"}}`, encodeURIComponent(String(requestParameters.project))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApiClientFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete an API Client
+     */
+    async apiClientDelete(requestParameters: ApiClientDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApiClient> {
+        const response = await this.apiClientDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * List all api clients
      */
     async apiClientQueryRaw(requestParameters: ApiClientQueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApiClientPaginator>> {
@@ -114,6 +171,18 @@ export class APIClientsApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.offset !== undefined) {
+            queryParameters['offset'] = requestParameters.offset;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.sort) {
+            queryParameters['sort'] = requestParameters.sort;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
